@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:presence/login/ForgetPasswordPage.dart'; // Import the forget password page file
-import 'package:presence/login/RegistrationPage.dart'; // Import the registration page file
+import 'package:presence/login/RegistrationPage.dart';
+import 'package:presence/student/Home.dart'; // Import the registration page file
+// import 'package:presence/Home.dart'; // Import the registration page file
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ForgetPasswordPage(),
+                    builder: (context) => const ForgetPasswordPage(),
                   ),
                 );
               },
@@ -50,12 +52,12 @@ class LoginPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     // Navigate to registration page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegistrationPage(),
-                  ),
-                );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegistrationPage(),
+                      ),
+                    );
                   },
                   child: const Text(
                     "Register",
@@ -98,8 +100,8 @@ class LoginForm extends StatelessWidget {
         children: [
           const TextField(
             decoration: InputDecoration(
-              hintText: 'Username',
-              icon: Icon(Icons.person),
+              hintText: 'Email',
+              icon: Icon(Icons.email),
             ),
           ),
           const SizedBox(height: 20),
@@ -114,6 +116,18 @@ class LoginForm extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               // Perform login action
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => Home(),
+              //   ),
+              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ),
+              );
             },
             child: const Text('Login'),
           ),

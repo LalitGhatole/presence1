@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
@@ -52,8 +54,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         height: 30, // Adjust the height as needed
         fit: BoxFit.contain, // Ensure the logo fits within its container
       ),
-      SizedBox(width: 5), // Adjust the spacing between the logo and text
-      Text(
+      const SizedBox(width: 5), // Adjust the spacing between the logo and text
+      const Text(
         'Presence', // Your app name or text
         style: TextStyle(
           fontSize: 20, // Adjust the font size as needed
@@ -70,7 +72,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: 300,
                 padding: const EdgeInsets.all(20),
@@ -88,13 +90,13 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ),
                 child: Column(
                   children: [
-                    TextField(
+                    const TextField(
                       decoration: InputDecoration(
                         hintText: 'Email',
                         icon: Icon(Icons.email),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -102,12 +104,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         });
                         // Send OTP logic
                       },
-                      child: Text('Send OTP'),
+                      child: const Text('Send OTP'),
                     ),
                     if (_isOTPSent)
                       Column(
                         children: [
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -120,7 +122,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     maxLength: 1,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       counterText: "",
                                       border: OutlineInputBorder(),
                                     ),
@@ -128,7 +130,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                 ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -136,17 +138,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               });
                               // Verify OTP logic
                             },
-                            child: Text('Verify'),
+                            child: const Text('Verify'),
                           ),
                           if (_isOTPVerified)
                             Column(
                               children: [
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 TextField(
                                   obscureText: !_isPasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: 'New Password',
-                                    icon: Icon(Icons.lock),
+                                    icon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
                                       onPressed: () {
@@ -157,12 +159,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 TextField(
                                   obscureText: !_isPasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: 'Confirm Password',
-                                    icon: Icon(Icons.lock),
+                                    icon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
                                       onPressed: () {
@@ -173,28 +175,28 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 ElevatedButton(
                                   onPressed: () {
                                     // Change Password logic
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        title: Text('Password Updated'),
-                                        content: Text('Your password has been updated.'),
+                                        title: const Text('Password Updated'),
+                                        content: const Text('Your password has been updated.'),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.pop(context); // Close the dialog
                                               Navigator.pop(context); // Go back to the login page
                                             },
-                                            child: Text('OK'),
+                                            child: const Text('OK'),
                                           ),
                                         ],
                                       ),
                                     );
                                   },
-                                  child: Text('Change Password'),
+                                  child: const Text('Change Password'),
                                 ),
                               ],
                             ),
@@ -212,7 +214,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ForgetPasswordPage(),
   ));
 }
