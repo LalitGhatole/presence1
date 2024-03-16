@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:presence/login/ForgetPasswordPage.dart'; // Import the forget password page file
 import 'package:presence/login/RegistrationPage.dart';
 import 'package:presence/student/Home.dart'; // Import the registration page file
+import 'package:presence/teacher/Home.dart'; // Import the registration page file
+
 // import 'package:presence/Home.dart'; // Import the registration page file
 
 class LoginPage extends StatelessWidget {
@@ -125,7 +127,7 @@ class LoginForm extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Home(),
+                  builder: (context) => TeacherHomePage(),
                 ),
               );
             },
