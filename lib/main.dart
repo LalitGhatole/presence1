@@ -1,8 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:presence/student/Home.dart';
+import 'package:presence/firebase_options.dart';
 import 'package:presence/login/LoginPage.dart'; // Import your login page file
+import 'package:firebase_app_check/firebase_app_check.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 

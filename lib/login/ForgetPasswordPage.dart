@@ -1,6 +1,6 @@
-// ignore_for_file: file_names, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({Key? key}) : super(key: key);
@@ -10,203 +10,114 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
-  bool _isOTPSent = false;
-  bool _isOTPVerified = false;
-  bool _isPasswordVisible = false;
-  late List<TextEditingController> _otpControllers;
-  late List<FocusNode> _focusNodes;
-
-  @override
-  void initState() {
-    super.initState();
-    _otpControllers = List.generate(4, (index) => TextEditingController());
-    _focusNodes = List.generate(4, (index) => FocusNode());
-    for (int i = 0; i < _otpControllers.length - 1; i++) {
-      _otpControllers[i].addListener(() {
-        if (_otpControllers[i].text.length == 1) {
-          _focusNodes[i + 1].requestFocus();
-        }
-      });
-    }
-  }
+  TextEditingController _emailController = TextEditingController();
+  bool _isEmailVerified = false;
 
   @override
   void dispose() {
-    for (var controller in _otpControllers) {
-      controller.dispose();
-    }
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
+    _emailController.dispose();
     super.dispose();
+  }
+
+  Future<bool> _isUserRegistered(String email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      return snapshot.docs.isNotEmpty;
+    } catch (error) {
+      print('Error checking user registration: $error');
+      return false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: Row(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Image.asset(
-        'assets/images/presence_logo.png', // Your app logo
-        height: 30, // Adjust the height as needed
-        fit: BoxFit.contain, // Ensure the logo fits within its container
+        title: const Text('Forget Password'),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
-      const SizedBox(width: 5), // Adjust the spacing between the logo and text
-      const Text(
-        'Presence', // Your app name or text
-        style: TextStyle(
-          fontSize: 20, // Adjust the font size as needed
-        ),
-      ),
-    ],
-  ),
-  centerTitle: true,
-  backgroundColor: Colors.blue,
-),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                hintText: 'Enter your email',
+                icon: Icon(Icons.email),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                String email = _emailController.text.trim();
 
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        icon: Icon(Icons.email),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isOTPSent = true;
-                        });
-                        // Send OTP logic
-                      },
-                      child: const Text('Send OTP'),
-                    ),
-                    if (_isOTPSent)
-                      Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 0; i < 4; i++)
-                                SizedBox(
-                                  width: 50,
-                                  child: TextField(
-                                    controller: _otpControllers[i],
-                                    focusNode: _focusNodes[i],
-                                    maxLength: 1,
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.center,
-                                    decoration: const InputDecoration(
-                                      counterText: "",
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isOTPVerified = true;
-                              });
-                              // Verify OTP logic
-                            },
-                            child: const Text('Verify'),
-                          ),
-                          if (_isOTPVerified)
-                            Column(
-                              children: [
-                                const SizedBox(height: 20),
-                                TextField(
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    hintText: 'New Password',
-                                    icon: const Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isPasswordVisible = !_isPasswordVisible;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                TextField(
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    hintText: 'Confirm Password',
-                                    icon: const Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isPasswordVisible = !_isPasswordVisible;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Change Password logic
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('Password Updated'),
-                                        content: const Text('Your password has been updated.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context); // Close the dialog
-                                              Navigator.pop(context); // Go back to the login page
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: const Text('Change Password'),
-                                ),
-                              ],
+                bool isRegistered = await _isUserRegistered(email);
+
+                if (isRegistered) {
+                  try {
+                    await FirebaseAuth.instance
+                        .sendPasswordResetEmail(email: email);
+                    setState(() {
+                      _isEmailVerified = true;
+                    });
+                  } catch (error) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: Text(error.toString()),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
                             ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('User Not Registered'),
+                        content: const Text('This email is not registered.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
                         ],
-                      ),
-                  ],
+                      );
+                    },
+                  );
+                }
+              },
+              child: const Text('Send Password Reset Email'),
+            ),
+            if (_isEmailVerified)
+              const Text(
+                'Password reset link sent to your email.',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

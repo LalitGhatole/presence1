@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120599335181",
+    "project_id": "presence-8ead1",
+    "storage_bucket": "presence-8ead1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120599335181:android:bba83e61c75abdf041e044",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfbviCR811_JgjKb33zhPYzFOVLgzoZgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

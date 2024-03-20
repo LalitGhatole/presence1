@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:presence/login/LoginPage.dart';
 import 'profile.dart';
 import 'AssignmentDetailsPage.dart';
 import 'Home.dart'; // Import the file where Course class is defined
@@ -682,7 +683,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                     (Route<dynamic> route) => false,
                   );
                 },

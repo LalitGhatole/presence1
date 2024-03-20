@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'bar/app_bar.dart';
 import 'bar/profile.dart';
 import 'options/course_details.dart';
-import 'options/email.dart';
+// import 'options/email.dart';
 
 class TeacherHomePage extends StatelessWidget {
   @override
@@ -129,10 +129,10 @@ class TeacherHomePage extends StatelessWidget {
             title: 'Email',
             icon: Icons.email,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EmailComposer()),
-              );
+              // Navigator.push(
+              //   context,
+              // MaterialPageRoute(builder: (context) => EmailComposer()),
+              // );
             },
           ),
           _buildTile(

@@ -16,7 +16,6 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   String? _selectedBranch = 'Select';
   String? _selectedYear = 'Select';
-  String? _selectedSemester = 'Select'; // Added semester field
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -43,12 +42,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     '3rd Year',
     '4th Year'
   ];
-  final Map<String, List<String>> semesters = {
-    '1st Year': ['Select', '1', '2'],
-    '2nd Year': ['Select', '3', '4'],
-    '3rd Year': ['Select', '5', '6'],
-    '4th Year': ['Select', '7', '8']
-  };
 
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
@@ -58,7 +51,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     super.initState();
     _selectedBranch = branches[0]; // Set initial value for branch
     _selectedYear = years[0]; // Set initial value for year
-    _selectedSemester = 'Select'; // Set initial value for semester
   }
 
   @override
@@ -257,7 +249,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         }
                         return null;
                       },
-                      isExpanded: true,
+                      isExpanded:
+                          true, // Add this line to make the dropdown fully expanded
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
@@ -265,8 +258,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       onChanged: (value) {
                         setState(() {
                           _selectedYear = value;
-                          _selectedSemester =
-                              'Select'; // Reset selected semester when year changes
                         });
                       },
                       items: years.map((year) {
@@ -282,34 +273,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       validator: (value) {
                         if (value == 'Select') {
                           return 'Please select a year';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    DropdownButtonFormField<String>(
-                      value: _selectedSemester,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedSemester = value;
-                        });
-                      },
-                      items:
-                          (_selectedYear != null && _selectedYear != 'Select')
-                              ? semesters[_selectedYear!]!.map((semester) {
-                                  return DropdownMenuItem<String>(
-                                    value: semester,
-                                    child: Text(semester),
-                                  );
-                                }).toList()
-                              : [],
-                      decoration: const InputDecoration(
-                        labelText: 'Semester',
-                        icon: Icon(Icons.event),
-                      ),
-                      validator: (value) {
-                        if (value == 'Select') {
-                          return 'Please select a semester';
                         }
                         return null;
                       },
@@ -419,8 +382,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               setState(() {
                                 _selectedBranch = branches[0];
                                 _selectedYear = years[0];
-                                _selectedSemester =
-                                    'Select'; // Clear selected semester
                                 _image = null; // Clear the profile picture
                               });
                             },
@@ -477,7 +438,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'studentRoll': _studentRollController.text.trim(),
         'branch': _selectedBranch,
         'year': _selectedYear,
-        'semester': _selectedSemester, // Save selected semester
         'role': 'student',
         'profilePic': imageUrl,
       });
@@ -607,12 +567,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     if (_selectedYear == 'Select') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select a year')),
-      );
-      return false;
-    }
-    if (_selectedSemester == 'Select') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a semester')),
       );
       return false;
     }

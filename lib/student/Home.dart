@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'course_details.dart';
-import 'Profile.dart';
+import 'bar/Profile.dart';
+import 'bar/app_bar.dart';
+import 'package:presence/login/LoginPage.dart'; // Import the login page file
 
 class Course {
   final String name;
@@ -10,7 +14,7 @@ class Course {
   Course({required this.name, required this.semester, required this.iconData});
 }
 
-class Home extends StatelessWidget {
+class StudentHomePage extends StatelessWidget {
   final List<Course> enrolledCourses = [
     Course(name: 'Math', semester: 1, iconData: Icons.school),
     Course(name: 'Science', semester: 2, iconData: Icons.school),
@@ -21,48 +25,12 @@ class Home extends StatelessWidget {
     // Add more courses as needed
   ];
 
-  Home({Key? key}) : super(key: key);
+  StudentHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/presence_logo.png', // Your app logo
-              height: 30, // Adjust the height as needed
-              fit: BoxFit.contain, // Ensure the logo fits within its container
-            ),
-            const SizedBox(
-                width: 5), // Adjust the spacing between the logo and text
-            const Text(
-              'Presence', // Your app name or text
-              style: TextStyle(
-                fontSize: 20, // Adjust the font size as needed
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              _showProfileOptions(context);
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: CircleAvatar(
-                radius: 18,
-                backgroundImage: AssetImage('assets/images/profile.png'),
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(profilePhotoUrl: 'assets/images/profile.png'),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -100,12 +68,9 @@ class Home extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfilePage(),
+                    builder: (context) => ProfilePage(),
                   ),
-                ).then((_) {
-                  Navigator.pop(context); // Dismiss the bottom sheet
-                });
-                _dismissProfileOptions(context);
+                );
               },
             ),
             ListTile(
@@ -153,93 +118,6 @@ class Home extends StatelessWidget {
           return CourseBlock(course: course);
         },
       ),
-    );
-  }
-
-  void _showProfileOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'John Doe', // Dummy user name
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Computer Science and Engineering, 3rd Year', // Dummy branch and year
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('View Profile'),
-                onTap: () {
-                  // Handle view profile option
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ),
-                  ).then((_) {
-                    Navigator.pop(context); // Dismiss the bottom sheet
-                  });
-                },
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.red, // Set logout icon color to red
-                ),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onTap: () {
-                  // Handle logout option
-                  _showLogoutConfirmation(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _dismissProfileOptions(BuildContext context) {
-    Navigator.of(context).pop();
-  }
-
-  void _showLogoutConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Logout'),
-          content: const Text('Are you sure you want to logout?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Dismiss the dialog
-              },
-            ),
-            TextButton(
-              child: const Text('Yes'),
-              onPressed: () {
-                // Perform logout action
-                // For demonstration purposes, just navigate to login page
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
@@ -345,6 +223,6 @@ class _CourseBlockState extends State<CourseBlock> {
 
 void main() {
   runApp(MaterialApp(
-    home: Home(),
+    home: StudentHomePage(),
   ));
 }
